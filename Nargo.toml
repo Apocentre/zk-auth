@@ -1,0 +1,9 @@
+[package]
+name = "zk_auth"
+type = "bin"
+authors = [""]
+compiler_version = ">=0.19.3"
+
+[dependencies]
+base64 = { path = "../noir-libs/base64" }
+collections = { path = "../noir-libs/collections" }
