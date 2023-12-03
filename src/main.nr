@@ -7,7 +7,7 @@ use dep::base64::{
   constants::MAX_SIZE, encoder::Encoder, classic::get_padding_char,
 };
 use crate::{
-  constants::{MAX_CLAIM_LEN, MAX_JWT_LEN, SIG_LEN},
+  constants::{MAX_CLAIM_LEN, MAX_JWT_LEN, SIG_LEN, NON_ASCII_CODE},
   inclusion::prove_inclusion,
 };
 
@@ -43,30 +43,29 @@ use crate::{
 /// and should cover most use cases.
 fn main(
   iss: pub [Field; MAX_CLAIM_LEN],
-  iss_loc: Field, 
+  iss_loc: u64, 
   jwt: [Field; MAX_JWT_LEN],
-  sub: pub [Field; MAX_CLAIM_LEN],
-  _sig: [Field; SIG_LEN],
+  // _sub: pub [Field; MAX_CLAIM_LEN],
+  // _sig: [Field; SIG_LEN],
 ) {
   prove_inclusion(iss, jwt, iss_loc);
 }
 
-// #[test]
-// fn test_main() {
-//   let mut value = [0; 4];
-//   value[0] = 65;
-//   value[1] = 66;
-//   value[2] = 67;
-//   value[3] = 68;
-  
-//   let expected: [Field] = [
-//     81, 85, 74, 68,
-//     82, 65, get_padding_char() as Field, get_padding_char() as Field,
-//   ];
+#[test]
+fn test_main() {
+  // add not ascci code
+  let mut iss = [NON_ASCII_CODE; MAX_CLAIM_LEN];
+  // not the @ which suggests that we use the offset-1 version of the encoded value
+  let iss_str = "\"@iss\":\"https://securetoken.google.com/eutopic-staging-efa58\"".as_bytes();
+  for i in 0..60 {
+    iss[i] = iss_str[i] as Field;
+  }
 
-//   let result = main(value);
+  let mut jwt: [Field; MAX_JWT_LEN] = [NON_ASCII_CODE; MAX_JWT_LEN];
+  let jwt_str = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBiYmQyOTllODU2MmU3MmYyZThkN2YwMTliYTdiZjAxMWFlZjU1Y2EiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGF2bG9zIFBvbGlhbmlkaXMiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FDTlBFdThJR00tNVNGYlZpV3Z0LXBRVkQ2SXJLME53NGNfQjVIODNnNjd3MXc9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXVkIjoiZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXV0aF90aW1lIjoxNzAxMjU3NDY5LCJ1c2VyX2lkIjoib3V6TmlRSVlWUGQxM3dHSVV2OXZuMFY1RmlkMiIsInN1YiI6Im91ek5pUUlZVlBkMTN3R0lVdjl2bjBWNUZpZDIiLCJpYXQiOjE3MDEyNTc0NjksImV4cCI6MTcwMTI2MTA2OSwiZW1haWwiOiJwcG9saWFuaUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwODc3NzgyMTEwNTgwMjg0NjE2NyJdLCJlbWFpbCI6WyJwcG9saWFuaUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19".as_bytes();
+  for i in 0..819 {
+    jwt[i] = jwt_str[i] as Field;
+  }
 
-//   for i in 0..8 {
-//     assert(result[i] == expected[i]);
-//   }
-// }
+  main(iss, 279, jwt);
+}
