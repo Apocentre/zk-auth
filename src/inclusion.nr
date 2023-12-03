@@ -25,6 +25,7 @@ pub fn prove_inclusion(
   claim: [Field; MAX_CLAIM_LEN],
   jwt: [Field; MAX_JWT_LEN],
   start_index: u64,
+  has_padding: bool,
 ) {
   let mut claim_bytes: DynamicArray<Field, MAX_CLAIM_LEN> = DynamicArray::init();
   // copy then actaul bytes of the claim value into the dynamic arrayg
@@ -35,8 +36,11 @@ pub fn prove_inclusion(
   }
 
   let mut encoded_claim = Encoder::encode(claim_bytes);
-  encoded_claim.delete_front(4);
-  // encoded_claim.delete_back(4);
+
+  if has_padding {
+    encoded_claim.delete_front(4);
+    // encoded_claim.delete_back(4);
+  }
 
   let jwt_slice = get_slice(jwt, start_index);
   let mut j = 0;
@@ -45,6 +49,7 @@ pub fn prove_inclusion(
     if encoded_claim.get(i).has_value() {
       let jwt_byte = jwt_slice.get(j).unwrap();
       j += 1;
+
       assert(encoded_claim.get(i).unwrap() == jwt_byte);
     }
   }

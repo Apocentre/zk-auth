@@ -7,7 +7,9 @@ use dep::base64::{
   constants::MAX_SIZE, encoder::Encoder, classic::get_padding_char,
 };
 use crate::{
-  constants::{MAX_CLAIM_LEN, MAX_JWT_LEN, SIG_LEN, NON_ASCII_CODE},
+  constants::{
+    MAX_CLAIM_LEN, MAX_JWT_LEN, SIG_LEN, NON_ASCII_CODE, PADDING_CHARACTER,
+  },
   inclusion::prove_inclusion,
 };
 
@@ -45,10 +47,15 @@ fn main(
   iss: pub [Field; MAX_CLAIM_LEN],
   iss_loc: u64, 
   jwt: [Field; MAX_JWT_LEN],
-  // _sub: pub [Field; MAX_CLAIM_LEN],
+  sub: pub [Field; MAX_CLAIM_LEN],
+  sub_loc: u64,
   // _sig: [Field; SIG_LEN],
 ) {
-  prove_inclusion(iss, jwt, iss_loc);
+  let iss_has_padding = iss[1] == PADDING_CHARACTER;
+  let sub_has_padding = sub[1] == PADDING_CHARACTER;
+  
+  prove_inclusion(iss, jwt, iss_loc, iss_has_padding);
+  prove_inclusion(sub, jwt, sub_loc, sub_has_padding);
 }
 
 #[test]
@@ -61,11 +68,19 @@ fn test_main() {
     iss[i] = iss_str[i] as Field;
   }
 
+  // unlike iss we don't use any offset thus there are no precedding @ characters.
+  let mut sub = [NON_ASCII_CODE; MAX_CLAIM_LEN];
+  // TODO: replace this sensitive value
+  let sub_str = "\"sub\":\"ouzNiQIYVPd13wGIUv9vn0V5Fid2\"".as_bytes();
+  for i in 0..36 {
+    sub[i] = sub_str[i] as Field;
+  }
+
   let mut jwt: [Field; MAX_JWT_LEN] = [NON_ASCII_CODE; MAX_JWT_LEN];
   let jwt_str = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBiYmQyOTllODU2MmU3MmYyZThkN2YwMTliYTdiZjAxMWFlZjU1Y2EiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGF2bG9zIFBvbGlhbmlkaXMiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FDTlBFdThJR00tNVNGYlZpV3Z0LXBRVkQ2SXJLME53NGNfQjVIODNnNjd3MXc9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXVkIjoiZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXV0aF90aW1lIjoxNzAxMjU3NDY5LCJ1c2VyX2lkIjoib3V6TmlRSVlWUGQxM3dHSVV2OXZuMFY1RmlkMiIsInN1YiI6Im91ek5pUUlZVlBkMTN3R0lVdjl2bjBWNUZpZDIiLCJpYXQiOjE3MDEyNTc0NjksImV4cCI6MTcwMTI2MTA2OSwiZW1haWwiOiJwcG9saWFuaUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwODc3NzgyMTEwNTgwMjg0NjE2NyJdLCJlbWFpbCI6WyJwcG9saWFuaUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19".as_bytes();
   for i in 0..819 {
     jwt[i] = jwt_str[i] as Field;
   }
 
-  main(iss, 279, jwt);
+  main(iss, 279, jwt, sub, 483);
 }
