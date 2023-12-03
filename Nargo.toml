@@ -5,5 +5,5 @@ authors = [""]
 compiler_version = ">=0.19.3"
 
 [dependencies]
-base64 = { git = "https://github.com/Apocentre/noir-libs", tag = "v0.0.1", directory = "base64" }
-collections = { git = "https://github.com/Apocentre/noir-libs", tag = "v0.0.1", directory = "collections" }
+base64 = { path = "../noir-libs/base64" }
+collections = { path = "../noir-libs/collections" }
