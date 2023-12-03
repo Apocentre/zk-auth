@@ -71,7 +71,7 @@ fn test_main() {
   // unlike iss we don't use any offset thus there are no precedding @ characters.
   let mut sub = [NON_ASCII_CODE; MAX_CLAIM_LEN];
   // TODO: replace this sensitive value
-  let sub_str = "\"sub\":\"ouzNiQIYVPd13wGIUv9vn0V5Fid2\"".as_bytes();
+  let sub_str = "\"sub\":\"\"".as_bytes();
   for i in 0..36 {
     sub[i] = sub_str[i] as Field;
   }
