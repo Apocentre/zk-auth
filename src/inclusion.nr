@@ -47,10 +47,12 @@ pub fn prove_inclusion(
 
   for i in 0..MAX_ENCODED_SIZE as Field {
     if encoded_claim.get(i).has_value() {
-      let jwt_byte = jwt_slice.get(j).unwrap();
-      j += 1;
+      if encoded_claim.get(i).unwrap() as u16 != get_padding_char() {
+        let jwt_byte = jwt_slice.get(j).unwrap();
+        j += 1;
 
-      assert(encoded_claim.get(i).unwrap() == jwt_byte);
+        assert(encoded_claim.get(i).unwrap() == jwt_byte);
+      }
     }
   }
 }
