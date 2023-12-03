@@ -1,7 +1,6 @@
 mod constants;
 mod inclusion;
 
-
 use dep::std;
 use dep::collections::dynamic_array::DynamicArray;
 use dep::base64::{
@@ -49,7 +48,7 @@ fn main(
   sub: pub [Field; MAX_CLAIM_LEN],
   _sig: [Field; SIG_LEN],
 ) {
-  prove_inclusion(iss, jwt);
+  prove_inclusion(iss, jwt, iss_loc);
 }
 
 // #[test]
