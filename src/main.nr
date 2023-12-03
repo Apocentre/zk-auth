@@ -1,7 +1,15 @@
+mod constants;
+mod inclusion;
+
+
 use dep::std;
 use dep::collections::dynamic_array::DynamicArray;
 use dep::base64::{
   constants::MAX_SIZE, encoder::Encoder, classic::get_padding_char,
+};
+use crate::{
+  constants::{MAX_CLAIM_LEN, MAX_JWT_LEN, SIG_LEN},
+  inclusion::prove_inclusion,
 };
 
 /// Accepts the following inputs
@@ -20,6 +28,10 @@ use dep::base64::{
 //           
 ///           We just have to prove that one of thre three possibled encoded versions of the ascii value is within the jwt token.
 ///           More about this https://mikeyveenstra.com/posts/base64-key-strings/.
+/// * `iss_loc` - The location within the base64 encoded jwt token where the base64 encoded value of the `iss` is located.
+///               The circuit must prove that if it base64 encodes the ascii iss value above then the result will be located
+///               at `iss_loc`. That is it will start at that index. So the circuit has to prove that it contains all the bytes
+///               of the encoded ascii iss value in the range [iss_loc, iss_loc + encoded_value_len]
 ///
 /// # Private
 /// 
@@ -31,12 +43,13 @@ use dep::base64::{
 /// Note that we use a specific static length for each of the binary data below.  The values are pretty conservative
 /// and should cover most use cases.
 fn main(
-  iss: pub [Field; 100],
-  jwt: [Field; 1000],
-  sub: pub [Field; 64],
-  _sig: [Field; 256],
+  iss: pub [Field; MAX_CLAIM_LEN],
+  iss_loc: Field, 
+  jwt: [Field; MAX_JWT_LEN],
+  sub: pub [Field; MAX_CLAIM_LEN],
+  _sig: [Field; SIG_LEN],
 ) {
-
+  prove_inclusion(iss, jwt);
 }
 
 // #[test]
