@@ -27,7 +27,7 @@ pub fn prove_inclusion(
   start_index: u64,
 ) {
   let mut claim_bytes: DynamicArray<Field, MAX_CLAIM_LEN> = DynamicArray::init();
-  // copy then actaul bytes of the claim value into the dynamic array
+  // copy then actaul bytes of the claim value into the dynamic arrayg
   for i in 0..MAX_CLAIM_LEN {
     if claim[i] != NON_ASCII_CODE {
       claim_bytes.push(claim[i]);
