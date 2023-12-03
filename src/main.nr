@@ -71,16 +71,16 @@ fn test_main() {
   // unlike iss we don't use any offset thus there are no precedding @ characters.
   let mut sub = [NON_ASCII_CODE; MAX_CLAIM_LEN];
   // TODO: replace this sensitive value
-  let sub_str = "\"sub\":\"\"".as_bytes();
+  let sub_str = "\"sub\":\"z8tANtNT3RTyiaNKEgAYuJE5RwV2\"".as_bytes();
   for i in 0..36 {
     sub[i] = sub_str[i] as Field;
   }
 
   let mut jwt: [Field; MAX_JWT_LEN] = [NON_ASCII_CODE; MAX_JWT_LEN];
-  let jwt_str = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBiYmQyOTllODU2MmU3MmYyZThkN2YwMTliYTdiZjAxMWFlZjU1Y2EiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGF2bG9zIFBvbGlhbmlkaXMiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FDTlBFdThJR00tNVNGYlZpV3Z0LXBRVkQ2SXJLME53NGNfQjVIODNnNjd3MXc9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXVkIjoiZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXV0aF90aW1lIjoxNzAxMjU3NDY5LCJ1c2VyX2lkIjoib3V6TmlRSVlWUGQxM3dHSVV2OXZuMFY1RmlkMiIsInN1YiI6Im91ek5pUUlZVlBkMTN3R0lVdjl2bjBWNUZpZDIiLCJpYXQiOjE3MDEyNTc0NjksImV4cCI6MTcwMTI2MTA2OSwiZW1haWwiOiJwcG9saWFuaUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwODc3NzgyMTEwNTgwMjg0NjE2NyJdLCJlbWFpbCI6WyJwcG9saWFuaUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19".as_bytes();
+  let jwt_str = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBiYmQyOTllODU2MmU3MmYyZThkN2YwMTliYTdiZjAxMWFlZjU1Y2EiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoicGF2bG9zIHBhcGEiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUxtNXd1MVBZWklDT1dfZFlNbW1fbHB0MG10VzBVUllRWjNDZXR6ZnN4Yzk9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXVkIjoiZXV0b3BpYy1zdGFnaW5nLWVmYTU4IiwiYXV0aF90aW1lIjoxNzAxNjIxMjE4LCJ1c2VyX2lkIjoiejh0QU50TlQzUlR5aWFOS0VnQVl1SkU1UndWMiIsInN1YiI6Ino4dEFOdE5UM1JUeWlhTktFZ0FZdUpFNVJ3VjIiLCJpYXQiOjE3MDE2MjEyMTgsImV4cCI6MTcwMTYyNDgxOCwiZW1haWwiOiJwcDZnMTFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTczNjM5MTkxNzM0Mzc1NzU4MzAiXSwiZW1haWwiOlsicHA2ZzExQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.XOQDEI9oDcUPFG3aRuw9u4xYcVh4NKMwzX1Qu9W0pESJiyRruEgC5aOhIUbfZ0AR82h-6EtXQRfh2RYaMu06OF-r6YwkLy642RYXIy4QcinnlACmaVlImTaqpczMC8nvOXNY4vzGWiPJl33IDOiai09MARkRlXoihAKJjGdeM84YQ2omoip9oaiSwBMu55jnN_i9kol_QywjSZtPdsjx6V1jCqH72s2IqmSHgybgXhNEK8xufXXI9IKaAnrf9uDxAnh6OU77s3f5D85HS1Dv_GOWZPEgIf-URMj4j4FouxLfh_NaQ928kETEDzd2fwKMgpIwbbkEw_1XBYi_Nuwa9g".as_bytes();
   for i in 0..819 {
     jwt[i] = jwt_str[i] as Field;
   }
 
-  main(iss, 279, jwt, sub, 483);
+  main(iss, 267, jwt, sub, 471);
 }

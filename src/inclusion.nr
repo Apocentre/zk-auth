@@ -4,7 +4,6 @@ use dep::base64::{
   encoder::Encoder, classic::get_padding_char,
   constants::{MAX_ENCODED_SIZE},
 };
-use dep::poly_root::full_inclusive;
 use crate::constants::{MAX_CLAIM_LEN, MAX_JWT_LEN, SIG_LEN, NON_ASCII_CODE};
 
 fn get_slice(array: [Field; MAX_JWT_LEN], start: u64) -> DynamicArray<Field, MAX_ENCODED_SIZE> {
@@ -28,7 +27,7 @@ pub fn prove_inclusion(
   has_padding: bool,
 ) {
   let mut claim_bytes: DynamicArray<Field, MAX_CLAIM_LEN> = DynamicArray::init();
-  // copy then actaul bytes of the claim value into the dynamic arrayg
+  // copy then actual bytes of the claim value into the dynamic arrayg
   for i in 0..MAX_CLAIM_LEN {
     if claim[i] != NON_ASCII_CODE {
       claim_bytes.push(claim[i]);
