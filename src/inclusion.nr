@@ -36,8 +36,6 @@ pub fn prove_inclusion(
 
   let mut encoded_claim = Encoder::encode(claim_bytes);
 
-  std::println(encoded_claim.len());
-
   if has_padding {
     encoded_claim.delete_front(4);
     encoded_claim.delete_back(4);
@@ -51,7 +49,7 @@ pub fn prove_inclusion(
       if encoded_claim.get(i).unwrap() as u16 != get_padding_char() {
         let jwt_byte = jwt_slice.get(j).unwrap();
         j += 1;
-
+        std::println(encoded_claim.get(i).unwrap() );
         assert(encoded_claim.get(i).unwrap() == jwt_byte);
       }
     }
