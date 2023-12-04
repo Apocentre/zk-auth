@@ -36,9 +36,11 @@ pub fn prove_inclusion(
 
   let mut encoded_claim = Encoder::encode(claim_bytes);
 
+  std::println(encoded_claim.len());
+
   if has_padding {
     encoded_claim.delete_front(4);
-    // encoded_claim.delete_back(4);
+    encoded_claim.delete_back(4);
   }
 
   let jwt_slice = get_slice(jwt, start_index);
