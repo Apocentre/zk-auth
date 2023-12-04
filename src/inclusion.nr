@@ -49,7 +49,7 @@ pub fn prove_inclusion(
       if encoded_claim.get(i).unwrap() as u16 != get_padding_char() {
         let jwt_byte = jwt_slice.get(j).unwrap();
         j += 1;
-        std::println(encoded_claim.get(i).unwrap() );
+
         assert(encoded_claim.get(i).unwrap() == jwt_byte);
       }
     }
